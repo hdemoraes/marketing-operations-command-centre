@@ -17,31 +17,72 @@ def _get_sheet_url() -> str | None:
 def _normalize_sheet_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Map Google Sheets form submission columns to the app's expected schema."""
     df = df.copy()
-    df = df.rename(columns={"business_name": "company", "created_at": "date_created"})
 
+    # 1. Strip whitespace and lowercase all column names
+    df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
+
+    # 2. Fix known truncations produced by some Google Sheets CSV exports
+    _col_fixes = {
+        "landing_page_va":  "landing_page_variant",
+        "landing_page_var": "landing_page_variant",
+        "business_nam":     "business_name",
+        "contact_nam":      "contact_name",
+        "interest_leve":    "interest_level",
+        "company_siz":      "company_size",
+        "pain_poin":        "pain_point",
+    }
+    df = df.rename(columns={k: v for k, v in _col_fixes.items() if k in df.columns})
+
+    # 3. Keep both business_name and company for compatibility
+    if "business_name" in df.columns and "company" not in df.columns:
+        df["company"] = df["business_name"]
+    elif "company" in df.columns and "business_name" not in df.columns:
+        df["business_name"] = df["company"]
+
+    # 4. Rename created_at → date_created
+    if "created_at" in df.columns and "date_created" not in df.columns:
+        df = df.rename(columns={"created_at": "date_created"})
+
+    # 5. Split contact_name into first/last but keep the original column
     if "contact_name" in df.columns:
         names = df["contact_name"].fillna("").str.split(" ", n=1, expand=True)
         df["first_name"] = names[0]
-        df["last_name"] = names[1] if 1 in names.columns else ""
-        df.drop(columns=["contact_name"], inplace=True)
+        df["last_name"]  = names[1] if 1 in names.columns else ""
 
+    # 6. Map interest_level → lead_score; keep interest_level for scoring detection
     if "interest_level" in df.columns:
         df["lead_score"] = (
             df["interest_level"].map(_INTEREST_SCORE_MAP).fillna(30).astype(int)
         )
 
+    # 7. Populate notes from company_size but keep company_size column
     if "company_size" in df.columns:
         df["notes"] = df["company_size"].apply(
             lambda v: f"Company size: {v}" if pd.notna(v) and v else ""
         )
-        df.drop(columns=["company_size"], inplace=True)
 
-    for col, default in [("job_title", ""), ("last_contacted", pd.NaT), ("notes", "")]:
+    # 8. Add any still-missing columns with safe defaults
+    _defaults: dict = {
+        "contact_name":        "",
+        "company_size":        "",
+        "pain_point":          "",
+        "interest_level":      "",
+        "industry":            "",
+        "source":              "",
+        "status":              "New",
+        "landing_page_variant": "",
+        "email":               "",
+        "notes":               "",
+        "job_title":           "",
+        "last_contacted":      pd.NaT,
+        "date_created":        pd.NaT,
+    }
+    for col, default in _defaults.items():
         if col not in df.columns:
             df[col] = default
 
-    df["date_created"] = pd.to_datetime(df.get("date_created"), errors="coerce")
-    df["last_contacted"] = pd.to_datetime(df.get("last_contacted"), errors="coerce")
+    df["date_created"]   = pd.to_datetime(df["date_created"],   errors="coerce")
+    df["last_contacted"] = pd.to_datetime(df["last_contacted"],  errors="coerce")
     return df
 
 
