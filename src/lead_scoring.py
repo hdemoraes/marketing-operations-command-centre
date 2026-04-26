@@ -133,39 +133,41 @@ def _score_from_fields(row: pd.Series) -> int:
 def get_recommended_action(row: pd.Series) -> str:
     """
     Return a specific next step based on lead status and priority tier.
-    Uses priority (not raw score) so it works correctly for both CSV and
-    live leads, which use different scoring thresholds.
+    Always returns a single string; falls back to 'Review manually' on any error.
     """
-    status   = row["status"]
-    priority = row.get("priority", "")
+    try:
+        status   = str(row.get("status",   "") or "")
+        priority = str(row.get("priority", "") or "")
 
-    if priority == "Needs Review":
-        return "Review and complete lead details"
-    if status == "Closed Won":
-        return "Explore upsell or referral opportunity"
-    if status == "Closed Lost":
-        return "Add to 90-day re-engagement sequence"
-    if status == "Proposal Sent":
-        return "Chase for decision — follow up within 3 days"
-    if status == "Qualified" and priority == "Hot":
-        return "Fast-track to proposal this week"
-    if status == "Qualified":
-        return "Book discovery call to progress"
-    if status == "Contacted" and priority == "Hot":
-        return "Send proposal — high engagement signal"
-    if status == "Contacted":
-        return "Follow up within 48 hours"
-    if status == "Nurturing":
-        return "Enrol in automated email sequence"
-    if status == "New" and priority == "Hot":
-        return "Fast-track to proposal or discovery call"
-    if status == "New" and priority == "Warm":
-        return "Send intro email within 24 hours"
-    if status == "New" and priority == "Cold":
-        return "Add to nurture sequence"
-    if status == "New":
-        return "Send intro email within 24 hours"
-    return "Review and update lead status"
+        if priority == "Needs Review":
+            return "Review and complete lead details"
+        if status == "Closed Won":
+            return "Explore upsell or referral opportunity"
+        if status == "Closed Lost":
+            return "Add to 90-day re-engagement sequence"
+        if status == "Proposal Sent":
+            return "Chase for decision — follow up within 3 days"
+        if status == "Qualified" and priority == "Hot":
+            return "Fast-track to proposal this week"
+        if status == "Qualified":
+            return "Book discovery call to progress"
+        if status == "Contacted" and priority == "Hot":
+            return "Send proposal — high engagement signal"
+        if status == "Contacted":
+            return "Follow up within 48 hours"
+        if status == "Nurturing":
+            return "Enrol in automated email sequence"
+        if status == "New" and priority == "Hot":
+            return "Fast-track to proposal or discovery call"
+        if status == "New" and priority == "Warm":
+            return "Send intro email within 24 hours"
+        if status == "New" and priority == "Cold":
+            return "Add to nurture sequence"
+        if status == "New":
+            return "Send intro email within 24 hours"
+        return "Review and update lead status"
+    except Exception:
+        return "Review manually"
 
 
 # ── Estimated pipeline value ──────────────────────────────────────────────────
@@ -259,7 +261,8 @@ def enrich_leads(df: pd.DataFrame) -> pd.DataFrame:
 
     df["estimated_value"] = df.apply(lambda row: float(_calc_estimated_value(row)), axis=1)
     df["estimated_value"] = pd.to_numeric(df["estimated_value"], errors="coerce").fillna(2100)
-    df["recommended_action"] = df.apply(get_recommended_action, axis=1)
+    df["recommended_action"] = df.apply(lambda row: str(get_recommended_action(row)), axis=1)
+    df["recommended_action"] = df["recommended_action"].astype(str).fillna("Review manually")
     return df
 
 
