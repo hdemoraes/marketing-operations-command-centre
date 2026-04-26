@@ -182,6 +182,41 @@ def _calc_estimated_value(row: pd.Series) -> int:
     return int(base * (0.84 + variance))
 
 
+# ── Fallback scoring for CSV leads missing lead_score ────────────────────────
+
+def calculate_lead_score(row: pd.Series) -> int:
+    """Compute a lead score from interest_level, company_size, and pain_point."""
+    score = 0
+
+    interest = str(row.get("interest_level", "") or "").strip().lower()
+    if interest in ("high", "ready to move now"):
+        score += 40
+    elif interest == "medium":
+        score += 25
+    elif interest == "low":
+        score += 10
+    else:
+        score += 5
+
+    size = str(row.get("company_size", "") or "").strip()
+    if "200" in size:
+        score += 25
+    elif "51" in size:
+        score += 20
+    elif "11" in size:
+        score += 12
+    elif size:
+        score += 5
+
+    pain = str(row.get("pain_point", "") or "").strip()
+    if len(pain) >= 20:
+        score += 20
+    elif len(pain) >= 8:
+        score += 10
+
+    return min(score, 100)
+
+
 # ── Enrichment entry point ────────────────────────────────────────────────────
 
 def enrich_leads(df: pd.DataFrame) -> pd.DataFrame:
@@ -209,6 +244,8 @@ def enrich_leads(df: pd.DataFrame) -> pd.DataFrame:
         df.loc[incomplete, "priority"] = "Needs Review"
     else:
         # CSV leads: score is already in the file — assign priority only
+        if "lead_score" not in df.columns:
+            df["lead_score"] = df.apply(calculate_lead_score, axis=1)
         df["priority"] = df["lead_score"].apply(get_priority)
 
     df["estimated_value"]    = df.apply(_calc_estimated_value, axis=1)
