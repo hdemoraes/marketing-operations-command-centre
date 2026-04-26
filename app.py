@@ -60,6 +60,12 @@ with st.sidebar:
         st.info(f"📁 {_ds}")
         st.caption("No live CRM connected. Using local sample data.")
 
+    st.markdown("---")
+    if st.button("Refresh CRM Data", use_container_width=True):
+        st.cache_data.clear()
+        st.rerun()
+    st.caption("Click after submitting a new landing page lead.")
+
 # ── Session state ─────────────────────────────────────────────────────────────
 
 if "ai_output" not in st.session_state:
