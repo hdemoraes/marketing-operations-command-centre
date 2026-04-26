@@ -170,16 +170,25 @@ def get_recommended_action(row: pd.Series) -> str:
 
 # ── Estimated pipeline value ──────────────────────────────────────────────────
 
-def _calc_estimated_value(row: pd.Series) -> int:
+def _calc_estimated_value(row: pd.Series) -> float:
     """
     Derive a deterministic pipeline value from industry + lead_id.
     Varies ±20% around the industry baseline so values look realistic.
-    Handles any lead_id format by extracting digits only.
+    Always returns a single numeric float; falls back to 2100 on any error.
     """
-    base   = INDUSTRY_BASE_VALUE.get(row["industry"], 2500)
-    digits = "".join(filter(str.isdigit, str(row["lead_id"])))
-    variance = (int(digits) % 5) * 0.08 if digits else 0
-    return int(base * (0.84 + variance))
+    try:
+        existing = row.get("estimated_value", None)
+        if existing is not None and not isinstance(existing, (pd.Series, list, dict)):
+            numeric = pd.to_numeric(existing, errors="coerce")
+            if pd.notna(numeric):
+                return float(numeric)
+
+        base = INDUSTRY_BASE_VALUE.get(str(row.get("industry", "") or ""), 2500)
+        digits = "".join(filter(str.isdigit, str(row.get("lead_id", "") or "")))
+        variance = (int(digits) % 5) * 0.08 if digits else 0
+        return float(int(base * (0.84 + variance)))
+    except Exception:
+        return 2100.0
 
 
 # ── Fallback scoring for CSV leads missing lead_score ────────────────────────
@@ -248,7 +257,8 @@ def enrich_leads(df: pd.DataFrame) -> pd.DataFrame:
             df["lead_score"] = df.apply(calculate_lead_score, axis=1)
         df["priority"] = df["lead_score"].apply(get_priority)
 
-    df["estimated_value"]    = df.apply(_calc_estimated_value, axis=1)
+    df["estimated_value"] = df.apply(lambda row: float(_calc_estimated_value(row)), axis=1)
+    df["estimated_value"] = pd.to_numeric(df["estimated_value"], errors="coerce").fillna(2100)
     df["recommended_action"] = df.apply(get_recommended_action, axis=1)
     return df
 
