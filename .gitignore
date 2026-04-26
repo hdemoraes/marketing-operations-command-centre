@@ -1,0 +1,32 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Environment variables (contains secrets)
+.env
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Streamlit cache
+.streamlit/
+
+# Output files (generated at runtime)
+output/generated_followups.csv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Misc
+*.log
+GoogleShetsURL.txt

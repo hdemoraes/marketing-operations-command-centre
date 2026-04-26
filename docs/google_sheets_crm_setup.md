@@ -1,0 +1,173 @@
+# Google Sheets CRM Setup Guide
+
+This guide connects the two landing page forms to a Google Sheet, so every form submission appears as a new lead row and the Streamlit dashboard can read it live.
+
+---
+
+## Overview
+
+```
+Landing Page Form
+      │ fetch() POST (no-cors)
+      ▼
+Google Apps Script (doPost)
+      │ appendRow()
+      ▼
+Google Sheet (CRM data)
+      │ CSV export URL
+      ▼
+Streamlit Dashboard (load_crm_leads)
+```
+
+---
+
+## Step 1 — Create the Google Sheet
+
+1. Go to [sheets.google.com](https://sheets.google.com) and create a new spreadsheet.
+2. Name it something like **Marketing AI CRM**.
+3. Add the following headers in **Row 1** exactly as shown (case-sensitive):
+
+```
+lead_id | business_name | contact_name | email | industry | company_size | pain_point | interest_level | source | landing_page_variant | status | created_at
+```
+
+Column order doesn't matter — the Apps Script matches by name — but the header names must match exactly.
+
+---
+
+## Step 2 — Add the Apps Script
+
+1. In the spreadsheet, click **Extensions → Apps Script**.
+2. Delete any placeholder code in the editor.
+3. Paste the following code in full:
+
+```javascript
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var p     = e.parameter;
+
+  // Generate a short unique lead ID
+  var leadId = "F" + new Date().getTime().toString().slice(-7);
+
+  // Timestamp in YYYY-MM-DD HH:MM format
+  var now       = new Date();
+  var createdAt = Utilities.formatDate(now, Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm");
+
+  sheet.appendRow([
+    leadId,
+    p.business_name    || "",
+    p.contact_name     || "",
+    p.email            || "",
+    p.industry         || "",
+    p.company_size     || "",
+    p.pain_point       || "",
+    p.interest_level   || "Medium",
+    p.source           || "Landing Page",
+    p.landing_page_variant || "",
+    "New",      // status — always starts as New
+    createdAt
+  ]);
+
+  return HtmlService.createHtmlOutput(
+    "<h2 style='font-family:sans-serif;color:#27ae60'>&#10003; Submission received.</h2>"
+  );
+}
+```
+
+4. Click **Save** (floppy disk icon or Ctrl+S). Name the project anything you like.
+
+---
+
+## Step 3 — Deploy as a Web App
+
+1. Click **Deploy → New deployment**.
+2. Click the gear icon next to **Select type** and choose **Web app**.
+3. Set the following:
+   - **Description**: `CRM Form Handler`
+   - **Execute as**: `Me`
+   - **Who has access**: `Anyone`
+4. Click **Deploy**.
+5. Copy the **Web app URL** — it looks like:
+   ```
+   https://script.google.com/macros/s/AKfycb.../exec
+   ```
+
+> **Important**: Every time you edit the Apps Script code, you must create a **new deployment** (not update the existing one) to get the changes live.
+
+---
+
+## Step 4 — Add the URL to Both Landing Pages
+
+Open `landing_pages/variant_a.html` and `landing_pages/variant_b.html`. Find this line near the bottom of each file:
+
+```javascript
+var APPS_SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+```
+
+Replace `YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL` with the URL you copied in Step 3. Use the **same URL in both files**.
+
+---
+
+## Step 5 — Get the CSV Export URL for the Dashboard
+
+1. In the Google Sheet, click **Share** and set it to **Anyone with the link can view**.
+2. Copy the URL from the browser address bar. It will look like:
+   ```
+   https://docs.google.com/spreadsheets/d/SHEET_ID/edit#gid=0
+   ```
+3. Convert it to a CSV export URL by replacing `/edit#gid=0` with `/export?format=csv&gid=0`:
+   ```
+   https://docs.google.com/spreadsheets/d/SHEET_ID/export?format=csv&gid=0
+   ```
+
+---
+
+## Step 6 — Add the URL to .env
+
+In the project root, open (or create) `.env` and add:
+
+```
+STREAMLIT_GOOGLE_SHEET_CSV_URL=https://docs.google.com/spreadsheets/d/SHEET_ID/export?format=csv&gid=0
+```
+
+Replace `SHEET_ID` with the actual ID from your sheet's URL.
+
+---
+
+## Step 7 — Test the Full Flow
+
+1. Open `landing_pages/variant_a.html` in a browser.
+2. Fill in the form and submit.
+3. Check the Google Sheet — a new row should appear within a few seconds.
+4. Run the Streamlit app: `streamlit run app.py`
+5. The sidebar should show **🟢 Google Sheets CRM** and the Overview metrics should reflect your new lead.
+
+---
+
+## Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---------|-------------|-----|
+| Form submits but no row appears | Apps Script not deployed, or wrong URL | Re-deploy and copy the new URL |
+| Dashboard shows sample data despite URL set | CSV export URL wrong or sheet not shared publicly | Check the URL format and sharing settings |
+| Lead score shows as 30 for all sheet leads | `interest_level` column missing or misspelled | Check sheet column header matches exactly |
+| `_calc_estimated_value` error | `lead_id` format unexpected | The scoring module handles this — digits are extracted automatically |
+
+---
+
+## Column Reference
+
+| Sheet column | Dashboard column | Notes |
+|---|---|---|
+| `lead_id` | `lead_id` | Generated by Apps Script (`F` + timestamp suffix) |
+| `business_name` | `company` | Renamed on load |
+| `contact_name` | `first_name` + `last_name` | Split on first space |
+| `email` | `email` | Direct |
+| `industry` | `industry` | Must match one of the 10 industries for correct pipeline value |
+| `company_size` | `notes` | Stored as "Company size: X" |
+| `pain_point` | `pain_point` | Direct |
+| `interest_level` | `lead_score` | High=65, Medium=45, Low=25 |
+| `source` | `source` | Set to "Landing Page" by the form |
+| `landing_page_variant` | `landing_page_variant` | A or B |
+| `status` | `status` | Always "New" on arrival |
+| `created_at` | `date_created` | Renamed on load |

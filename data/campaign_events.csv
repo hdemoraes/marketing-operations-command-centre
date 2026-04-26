@@ -1,0 +1,157 @@
+event_id,lead_id,campaign_id,event_type,event_date,channel,landing_page_variant,page_url
+E001,L001,C002,form_submit,2024-01-15,LinkedIn,A,/lp/variant-a
+E002,L001,C002,email_open,2024-01-17,Email Campaign,A,
+E003,L001,C002,email_click,2024-01-18,Email Campaign,A,/features
+E004,L002,C001,page_view,2024-01-18,Google Ads,B,/lp/variant-b
+E005,L002,C001,page_view,2024-01-19,Google Ads,B,/pricing
+E006,L003,C012,form_submit,2024-01-20,Organic,A,/lp/variant-a
+E007,L003,C003,email_open,2024-01-26,Email Campaign,A,
+E008,L004,C007,form_submit,2024-01-22,Referral,B,/lp/variant-b
+E009,L004,C007,email_open,2024-01-24,Email Campaign,B,
+E010,L004,C007,email_click,2024-01-25,Email Campaign,B,/case-studies
+E011,L004,C007,email_click,2024-01-29,Email Campaign,B,/pricing
+E012,L005,C003,email_open,2024-01-25,Email Campaign,A,
+E013,L005,C003,email_open,2024-02-01,Email Campaign,A,
+E014,L005,C003,email_click,2024-02-05,Email Campaign,A,/features
+E015,L006,C002,form_submit,2024-01-28,LinkedIn,B,/lp/variant-b
+E016,L006,C002,email_open,2024-01-30,Email Campaign,B,
+E017,L006,C002,email_click,2024-02-01,Email Campaign,B,/pricing
+E018,L006,C008,email_open,2024-02-10,Email Campaign,B,
+E019,L007,C001,form_submit,2024-01-30,Google Ads,A,/lp/variant-a
+E020,L007,C001,email_open,2024-02-01,Email Campaign,A,
+E021,L007,C001,email_click,2024-02-05,Email Campaign,A,/case-studies
+E022,L007,C001,email_click,2024-02-10,Email Campaign,A,/pricing
+E023,L007,C001,email_click,2024-02-14,Email Campaign,A,/book-demo
+E024,L008,C012,page_view,2024-02-01,Organic,B,/lp/variant-b
+E025,L008,C012,page_view,2024-02-03,Organic,B,/pricing
+E026,L008,C012,page_view,2024-02-07,Organic,B,/pricing
+E027,L009,C007,form_submit,2024-02-03,Referral,A,/lp/variant-a
+E028,L009,C007,email_open,2024-02-05,Email Campaign,A,
+E029,L009,C007,email_click,2024-02-08,Email Campaign,A,/features
+E030,L010,C002,form_submit,2024-02-05,LinkedIn,B,/lp/variant-b
+E031,L010,C002,email_open,2024-02-07,Email Campaign,B,
+E032,L010,C002,email_open,2024-02-09,Email Campaign,B,
+E033,L010,C002,email_click,2024-02-10,Email Campaign,B,/features
+E034,L010,C002,email_click,2024-02-11,Email Campaign,B,/pricing
+E035,L010,C002,email_click,2024-02-12,Email Campaign,B,/book-demo
+E036,L011,C012,page_view,2024-02-07,Organic,A,/lp/variant-a
+E037,L012,C004,email_open,2024-02-09,Email Campaign,B,
+E038,L012,C004,email_open,2024-02-15,Email Campaign,B,
+E039,L012,C004,email_click,2024-02-20,Email Campaign,B,/features
+E040,L013,C001,form_submit,2024-02-10,Google Ads,A,/lp/variant-a
+E041,L013,C001,email_open,2024-02-12,Email Campaign,A,
+E042,L014,C002,form_submit,2024-02-12,LinkedIn,B,/lp/variant-b
+E043,L014,C002,email_open,2024-02-14,Email Campaign,B,
+E044,L014,C002,email_click,2024-02-18,Email Campaign,B,/case-studies
+E045,L015,C007,form_submit,2024-02-14,Referral,A,/lp/variant-a
+E046,L015,C007,email_open,2024-02-16,Email Campaign,A,
+E047,L015,C007,email_click,2024-02-20,Email Campaign,A,/pricing
+E048,L015,C007,email_click,2024-03-01,Email Campaign,A,/book-demo
+E049,L016,C012,form_submit,2024-02-16,Organic,B,/lp/variant-b
+E050,L016,C012,email_open,2024-02-18,Email Campaign,B,
+E051,L016,C012,email_click,2024-02-22,Email Campaign,B,/features
+E052,L017,C001,form_submit,2024-02-18,Google Ads,A,/lp/variant-a
+E053,L017,C001,page_view,2024-02-20,Google Ads,A,/pricing
+E054,L018,C003,email_open,2024-02-20,Email Campaign,B,
+E055,L018,C003,email_open,2024-03-01,Email Campaign,B,
+E056,L018,C003,email_click,2024-03-05,Email Campaign,B,/features
+E057,L019,C002,form_submit,2024-02-22,LinkedIn,A,/lp/variant-a
+E058,L019,C002,email_open,2024-02-24,Email Campaign,A,
+E059,L019,C002,email_click,2024-02-28,Email Campaign,A,/case-studies
+E060,L019,C002,email_click,2024-03-01,Email Campaign,A,/pricing
+E061,L020,C007,form_submit,2024-02-24,Referral,B,/lp/variant-b
+E062,L020,C007,email_open,2024-02-26,Email Campaign,B,
+E063,L020,C007,email_click,2024-03-01,Email Campaign,B,/case-studies
+E064,L020,C007,email_click,2024-03-05,Email Campaign,B,/pricing
+E065,L020,C007,email_click,2024-03-08,Email Campaign,B,/book-demo
+E066,L021,C012,page_view,2024-02-26,Organic,A,/lp/variant-a
+E067,L022,C001,form_submit,2024-02-28,Google Ads,B,/lp/variant-b
+E068,L022,C001,email_open,2024-03-01,Email Campaign,B,
+E069,L022,C001,email_click,2024-03-06,Email Campaign,B,/features
+E070,L023,C002,form_submit,2024-03-01,LinkedIn,A,/lp/variant-a
+E071,L023,C002,email_open,2024-03-03,Email Campaign,A,
+E072,L023,C002,email_click,2024-03-07,Email Campaign,A,/case-studies
+E073,L023,C002,email_click,2024-03-10,Email Campaign,A,/pricing
+E074,L024,C004,email_open,2024-03-02,Email Campaign,B,
+E075,L025,C007,form_submit,2024-03-04,Referral,A,/lp/variant-a
+E076,L025,C007,email_open,2024-03-06,Email Campaign,A,
+E077,L025,C007,email_click,2024-03-10,Email Campaign,A,/pricing
+E078,L025,C007,email_click,2024-03-15,Email Campaign,A,/book-demo
+E079,L026,C012,form_submit,2024-03-05,Organic,B,/lp/variant-b
+E080,L026,C012,email_open,2024-03-07,Email Campaign,B,
+E081,L026,C012,email_click,2024-03-12,Email Campaign,B,/features
+E082,L027,C005,form_submit,2024-03-07,Google Ads,A,/lp/variant-a
+E083,L027,C005,email_open,2024-03-09,Email Campaign,A,
+E084,L027,C005,email_click,2024-03-12,Email Campaign,A,/features
+E085,L028,C002,form_submit,2024-03-08,LinkedIn,B,/lp/variant-b
+E086,L028,C002,email_open,2024-03-10,Email Campaign,B,
+E087,L029,C004,form_submit,2024-03-10,Email Campaign,A,/lp/variant-a
+E088,L029,C004,email_open,2024-03-12,Email Campaign,A,
+E089,L029,C004,email_click,2024-03-14,Email Campaign,A,/pricing
+E090,L029,C004,email_click,2024-03-17,Email Campaign,A,/case-studies
+E091,L030,C007,form_submit,2024-03-11,Referral,B,/lp/variant-b
+E092,L031,C002,form_submit,2024-03-13,LinkedIn,A,/lp/variant-a
+E093,L031,C002,email_open,2024-03-15,Email Campaign,A,
+E094,L031,C002,email_click,2024-03-17,Email Campaign,A,/features
+E095,L031,C002,email_click,2024-03-20,Email Campaign,A,/pricing
+E096,L032,C001,form_submit,2024-03-14,Google Ads,B,/lp/variant-b
+E097,L032,C001,email_open,2024-03-16,Email Campaign,B,
+E098,L032,C001,email_click,2024-03-21,Email Campaign,B,/features
+E099,L033,C012,page_view,2024-03-15,Organic,A,/lp/variant-a
+E100,L034,C003,email_open,2024-03-16,Email Campaign,B,
+E101,L034,C003,email_open,2024-03-22,Email Campaign,B,
+E102,L034,C003,email_click,2024-03-28,Email Campaign,B,/features
+E103,L035,C002,form_submit,2024-03-18,LinkedIn,A,/lp/variant-a
+E104,L035,C002,email_open,2024-03-20,Email Campaign,A,
+E105,L035,C002,email_click,2024-03-25,Email Campaign,A,/pricing
+E106,L035,C002,email_click,2024-03-28,Email Campaign,A,/book-demo
+E107,L036,C007,form_submit,2024-03-19,Referral,B,/lp/variant-b
+E108,L036,C007,email_open,2024-03-21,Email Campaign,B,
+E109,L036,C007,email_click,2024-03-25,Email Campaign,B,/pricing
+E110,L036,C007,email_click,2024-04-01,Email Campaign,B,/book-demo
+E111,L037,C012,page_view,2024-03-20,Organic,A,/lp/variant-a
+E112,L037,C012,page_view,2024-03-22,Organic,A,/pricing
+E113,L038,C005,form_submit,2024-03-21,Google Ads,B,/lp/variant-b
+E114,L038,C005,email_open,2024-03-23,Email Campaign,B,
+E115,L038,C005,email_click,2024-03-27,Email Campaign,B,/features
+E116,L039,C004,form_submit,2024-03-22,Email Campaign,A,/lp/variant-a
+E117,L039,C004,email_open,2024-03-24,Email Campaign,A,
+E118,L039,C004,email_click,2024-03-27,Email Campaign,A,/features
+E119,L039,C004,email_click,2024-03-29,Email Campaign,A,/pricing
+E120,L040,C002,form_submit,2024-03-23,LinkedIn,B,/lp/variant-b
+E121,L041,C007,form_submit,2024-03-24,Referral,A,/lp/variant-a
+E122,L041,C007,email_open,2024-03-26,Email Campaign,A,
+E123,L041,C007,email_click,2024-03-30,Email Campaign,A,/features
+E124,L042,C012,form_submit,2024-03-25,Organic,B,/lp/variant-b
+E125,L042,C012,email_open,2024-03-27,Email Campaign,B,
+E126,L042,C012,email_click,2024-04-01,Email Campaign,B,/features
+E127,L043,C009,form_submit,2024-03-26,LinkedIn,A,/lp/variant-a
+E128,L043,C009,email_open,2024-03-28,Email Campaign,A,
+E129,L043,C009,email_click,2024-04-01,Email Campaign,A,/pricing
+E130,L043,C009,email_click,2024-04-05,Email Campaign,A,/book-demo
+E131,L044,C002,form_submit,2024-03-27,LinkedIn,B,/lp/variant-b
+E132,L044,C002,email_open,2024-03-29,Email Campaign,B,
+E133,L045,C004,form_submit,2024-03-28,Email Campaign,A,/lp/variant-a
+E134,L045,C004,email_open,2024-03-30,Email Campaign,A,
+E135,L045,C004,email_click,2024-04-01,Email Campaign,A,/case-studies
+E136,L045,C004,email_click,2024-04-04,Email Campaign,A,/pricing
+E137,L046,C012,page_view,2024-03-29,Organic,B,/lp/variant-b
+E138,L046,C012,page_view,2024-03-31,Organic,B,/features
+E139,L047,C007,form_submit,2024-03-30,Referral,A,/lp/variant-a
+E140,L047,C007,email_open,2024-04-01,Email Campaign,A,
+E141,L047,C007,email_click,2024-04-06,Email Campaign,A,/features
+E142,L048,C001,form_submit,2024-03-31,Google Ads,B,/lp/variant-b
+E143,L048,C001,email_open,2024-04-02,Email Campaign,B,
+E144,L048,C001,email_click,2024-04-05,Email Campaign,B,/case-studies
+E145,L048,C001,email_click,2024-04-07,Email Campaign,B,/pricing
+E146,L049,C009,form_submit,2024-04-01,LinkedIn,A,/lp/variant-a
+E147,L049,C009,email_open,2024-04-03,Email Campaign,A,
+E148,L049,C009,email_click,2024-04-07,Email Campaign,A,/features
+E149,L050,C010,email_open,2024-04-02,Email Campaign,B,
+E150,L051,C007,form_submit,2024-04-03,Referral,A,/lp/variant-a
+E151,L051,C007,email_open,2024-04-05,Email Campaign,A,
+E152,L051,C007,email_click,2024-04-07,Email Campaign,A,/features
+E153,L051,C007,email_click,2024-04-09,Email Campaign,A,/pricing
+E154,L052,C012,form_submit,2024-04-04,Organic,B,/lp/variant-b
+E155,L052,C012,email_open,2024-04-06,Email Campaign,B,
+E156,L052,C012,email_click,2024-04-10,Email Campaign,B,/features
